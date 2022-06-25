@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import { nanoid } from '@reduxjs/toolkit'
-import { styled } from '@mui/material/styles'
-import { Container, CssBaseline } from '@mui/material'
-import { ToDoList } from './components/todo-list'
-import { ToDoAdding } from './components/todo-adding'
-import { AppBar } from './components/app-bar'
-import { sortByDate, sortByCompleted } from './utils/sorting'
+import { Container, CssBaseline } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { nanoid } from '@reduxjs/toolkit';
+import { useState } from 'react';
+import { AppBar } from './components/app-bar';
+import { ToDoAdding } from './components/todo-adding';
+import { ToDoList } from './components/todo-list';
+import { sortByCompleted, sortByDate } from './utils/sorting';
 
 const AppLayout = styled(Container)(({ theme }) => ( {
 	...theme.typography.body2,
@@ -16,54 +16,54 @@ const AppLayout = styled(Container)(({ theme }) => ( {
 	flexDirection: 'column',
 	alignItems: 'center',
 	minHeight: '100vh',
-}))
+} ));
 
 function App() {
-	const [todo, setToDo] = useState({ title: '' })
-	const [todoList, setToDoList] = useState([])
-	const [isToDoValid, setIsToDoValid] = useState(false)
+	const [todo, setToDo] = useState({ title: '' });
+	const [todoList, setToDoList] = useState([]);
+	const [isToDoValid, setIsToDoValid] = useState(false);
 
 	const handleInputToDo = evt => {
-		const { target: { value } } = evt
+		const { target: { value } } = evt;
 		const data = {
 			id: nanoid(), createdAt: new Date(), title: value, completed: false,
-		}
-		setToDo(data)
+		};
+		setToDo(data);
 
 		if (/[\w\s]{5,}/.test(value)) {
-			setIsToDoValid(true)
+			setIsToDoValid(true);
 		} else {
-			setIsToDoValid(false)
+			setIsToDoValid(false);
 		}
-	}
+	};
 
 	const handleSubmitToDo = evt => {
-		evt.preventDefault()
+		evt.preventDefault();
 
-		setToDoList(oldList => [todo, ...oldList])
-		setToDo({ title: '' })
-		setIsToDoValid(false)
-	}
+		setToDoList(oldList => [todo, ...oldList]);
+		setToDo({ title: '' });
+		setIsToDoValid(false);
+	};
 
 	const handleCompleteToDo = (id, checked) => {
 		const mutatedList = todoList.map(item => {
 			if (item.id === id) {
-				item.completed = checked
+				item.completed = checked;
 			}
 
-			return item
-		})
+			return item;
+		});
 
-		const sortByDateList = mutatedList.sort(sortByDate)
-		const sortedList = sortByDateList.sort(sortByCompleted)
+		const sortByDateList = mutatedList.sort(sortByDate);
+		const sortedList = sortByDateList.sort(sortByCompleted);
 
-		setToDoList(() => [...sortedList])
-	}
+		setToDoList(() => [...sortedList]);
+	};
 
 	const handleDeleteToDo = id => {
-		const mutatedToDo = todoList.filter(item => item.id !== id)
-		setToDoList(() => [...mutatedToDo])
-	}
+		const mutatedToDo = todoList.filter(item => item.id !== id);
+		setToDoList(() => [...mutatedToDo]);
+	};
 
 	return (
 		<>
@@ -82,7 +82,7 @@ function App() {
 					onDelete={handleDeleteToDo}
 				/>
 			</AppLayout>
-		</> )
+		</> );
 }
 
-export default App
+export default App;

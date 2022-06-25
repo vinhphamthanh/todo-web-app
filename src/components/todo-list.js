@@ -1,8 +1,8 @@
-import { Paper, Typography, useTheme } from '@mui/material'
-import { styled } from '@mui/material/styles'
-import { ToDoItem } from './todo-item'
+import { Paper, Typography, useTheme } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { ToDoItem } from './todo-item';
 
-const Div = styled(Paper)(({ theme }) => ({
+const Div = styled(Paper)(({ theme }) => ( {
 	margin: `${theme.spacing(3)} auto`,
 	maxWidth: '100%',
 	width: 374,
@@ -13,7 +13,7 @@ const Div = styled(Paper)(({ theme }) => ({
 	borderStyle: 'solid',
 	borderColor: theme.palette.primary.light,
 	borderRadius: theme.spacing(1),
-}));
+} ));
 
 export const ToDoList = ({ todos, onComplete, onDelete }) => {
 	const theme = useTheme();
@@ -35,7 +35,7 @@ export const ToDoList = ({ todos, onComplete, onDelete }) => {
 				</Typography>
 			)}
 		</Div>
-	)
-}
+	);
+};
 
 

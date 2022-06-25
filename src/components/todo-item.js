@@ -1,6 +1,6 @@
-import { DeleteOutline } from '@mui/icons-material'
-import { Checkbox, Container, FormControlLabel, IconButton } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { DeleteOutline } from '@mui/icons-material';
+import { Checkbox, Container, FormControlLabel, IconButton } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const Div = styled(Container)(({ theme }) => ( {
 	display: 'grid',
@@ -11,19 +11,19 @@ const Div = styled(Container)(({ theme }) => ( {
 	width: '100%',
 	maxWidth: 'inherit',
 	margin: `${theme.spacing(0)} auto`
-} ))
+} ));
 
 export const ToDoItem = ({ item, theme, onComplete, onDelete }) => {
-	const { id, title, completed } = item
+	const { id, title, completed } = item;
 
 	const handleChange = evt => {
-		const { target: { checked } } = evt
-		onComplete(id, checked)
-	}
+		const { target: { checked } } = evt;
+		onComplete(id, checked);
+	};
 
 	const handleDelete = () => {
-		onDelete(id)
-	}
+		onDelete(id);
+	};
 
 	return (
 		<Div disableGutters>
@@ -44,5 +44,5 @@ export const ToDoItem = ({ item, theme, onComplete, onDelete }) => {
 				<DeleteOutline/>
 			</IconButton>
 		</Div>
-	)
-}
+	);
+};

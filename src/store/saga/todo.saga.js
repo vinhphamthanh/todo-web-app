@@ -16,7 +16,7 @@ function* setToDosWorker() {
 	try {
 		const todos = yield call(fetchToDosApi, TODO_URL);
 		yield put({
-			type: todoActions.setToDos.type,
+			type: `todos/${todoActions.setToDos.type}`, // Needs prefix of reducer name before action type
 			payload: todos
 		});
 	} catch (error) {
@@ -27,8 +27,8 @@ function* setToDosWorker() {
 	}
 }
 
-function* saga() {
+function* todoSaga() {
 	yield takeLatest(todoActions.fetchToDos.type, setToDosWorker);
 }
 
-export default saga;
+export default todoSaga;

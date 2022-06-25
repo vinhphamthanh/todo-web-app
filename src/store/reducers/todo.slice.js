@@ -22,9 +22,15 @@ const todo = createSlice({
 	},
 	reducers: {
 		[todoActions.setToDos.type]: (state, action) => {
+			console.log('')
+			console.log('[LOGGING----------------------LOGGING]')
+			console.log('[LOGGING]:::x:::slice:::action --> ', action)
 			state.todos = action.payload;
 		},
 		[todoActions.addToDo.type]: (state, action) => {
+			console.log('')
+			console.log('[LOGGING----------------------LOGGING]')
+			console.log('[LOGGING]:::x:::addTodo:::action --> ', action)
 			state.todos = [action.payload, ...state.todos];
 		},
 		[todoActions.updateToDos.type]: (state, action) => {

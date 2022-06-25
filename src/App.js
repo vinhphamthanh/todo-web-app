@@ -1,32 +1,69 @@
-import { Container, CssBaseline } from '@mui/material';
+import {
+	Container,
+	CssBaseline
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { nanoid } from '@reduxjs/toolkit';
-import { useState } from 'react';
+import {
+	useEffect,
+	useState
+} from 'react';
+import {
+	useDispatch,
+	useSelector
+} from 'react-redux';
 import { AppBar } from './components/app-bar';
-import { ToDoAdding } from './components/todo-adding';
-import { ToDoList } from './components/todo-list';
-import { sortByCompleted, sortByDate } from './utils/sorting';
+import { ToDoAdding } from './components/todo/todo-adding';
+import { ToDoList } from './components/todo/todo-list';
+import AppSlices from './store/reducers';
+import {
+	sortByCompleted,
+	sortByDate
+} from './utils/sorting';
 
-const AppLayout = styled(Container)(({ theme }) => ( {
-	...theme.typography.body2,
-	display: 'flex',
-	padding: theme.spacing(9, 2),
-	color: theme.palette.text.secondary,
-	textAlign: 'center',
-	flexDirection: 'column',
-	alignItems: 'center',
-	minHeight: '100vh',
-} ));
+const AppLayout = styled(Container)(({ theme }) => (
+	{
+		...theme.typography.body2,
+		display: 'flex',
+		padding: theme.spacing(9, 2),
+		color: theme.palette.text.secondary,
+		textAlign: 'center',
+		flexDirection: 'column',
+		alignItems: 'center',
+		minHeight: '100vh',
+	}
+));
+
+const initialToDo = {
+	title: '',
+};
 
 function App() {
-	const [todo, setToDo] = useState({ title: '' });
-	const [todoList, setToDoList] = useState([]);
+	const dispatch = useDispatch();
+	const {
+		      ToDoSlice: {
+			      addToDo,
+			      updateToDos,
+			      todosSelect,
+			      todoActions,
+		      }
+	      } = AppSlices;
+	const { todos } = useSelector(todosSelect);
+
+	const [todo, setToDo] = useState(initialToDo);
 	const [isToDoValid, setIsToDoValid] = useState(false);
+
+	useEffect(() => {
+		dispatch(todoActions.fetchToDos);
+	}, []);
 
 	const handleInputToDo = evt => {
 		const { target: { value } } = evt;
 		const data = {
-			id: nanoid(), createdAt: new Date(), title: value, completed: false,
+			id: nanoid(),
+			createdAt: new Date().getTime(),
+			title: value,
+			completed: false,
 		};
 		setToDo(data);
 
@@ -40,29 +77,32 @@ function App() {
 	const handleSubmitToDo = evt => {
 		evt.preventDefault();
 
-		setToDoList(oldList => [todo, ...oldList]);
-		setToDo({ title: '' });
+		setToDo(initialToDo);
 		setIsToDoValid(false);
+		dispatch(addToDo(todo));
 	};
 
 	const handleCompleteToDo = (id, checked) => {
-		const mutatedList = todoList.map(item => {
+		const mutatedList = todos.map(item => {
 			if (item.id === id) {
-				item.completed = checked;
+				return {
+					...item,
+					completed: checked,
+				};
 			}
 
 			return item;
 		});
 
 		const sortByDateList = mutatedList.sort(sortByDate);
-		const sortedList = sortByDateList.sort(sortByCompleted);
+		const sortByCompletedList = sortByDateList.sort(sortByCompleted);
 
-		setToDoList(() => [...sortedList]);
+		dispatch(updateToDos(sortByCompletedList));
 	};
 
 	const handleDeleteToDo = id => {
-		const mutatedToDo = todoList.filter(item => item.id !== id);
-		setToDoList(() => [...mutatedToDo]);
+		const mutatedToDo = todos.filter(item => item.id !== id);
+		dispatch(updateToDos(mutatedToDo));
 	};
 
 	return (
@@ -77,12 +117,13 @@ function App() {
 					onSubmit={handleSubmitToDo}
 				/>
 				<ToDoList
-					todos={todoList}
+					todos={todos}
 					onComplete={handleCompleteToDo}
 					onDelete={handleDeleteToDo}
 				/>
 			</AppLayout>
-		</> );
+		</>
+	);
 }
 
 export default App;

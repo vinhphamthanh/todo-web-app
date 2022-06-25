@@ -1,22 +1,34 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {
+	createAction,
+	createSlice
+} from '@reduxjs/toolkit';
 
-const initialState = {
-	todo: { title: '' },
-	todos: []
+const fetch = createAction('fetchToDos');
+const set = createAction('setToDos');
+const add = createAction('addToDo');
+const update = createAction('updateToDos');
+
+export const todoActions = {
+	fetchToDos: fetch(),
+	setToDos: set(),
+	addToDo: add(),
+	updateToDos: update(),
 };
 
 const todo = createSlice({
-	name: 'todo',
-	initialState,
+	name: 'todos',
+	initialState: {
+		todos: [],
+	},
 	reducers: {
-		getToDo(state, action) {
+		[todoActions.setToDos.type]: (state, action) => {
 			state.todos = action.payload;
 		},
-		addToDo(state, action) {
-			state.todo = action.payload;
+		[todoActions.addToDo.type]: (state, action) => {
+			state.todos = [action.payload, ...state.todos];
 		},
-		updateToDo(state, action) {
-			state.todo = action.payload;
+		[todoActions.updateToDos.type]: (state, action) => {
+			state.todos = action.payload;
 		},
 		deleteToDo(state, action) {
 			state.todo = action.payload;
@@ -25,9 +37,11 @@ const todo = createSlice({
 });
 
 export const {
-	             getToDo,
+	             setToDos,
 	             addToDo,
-	             updateToDo,
-	             deleteToDo
+	             updateToDos,
+	             // deleteToDos,
              } = todo.actions;
-export default todo.reducer;
+export const todosSelect = state => state.todos;
+export const todosReducer = todo.reducer;
+

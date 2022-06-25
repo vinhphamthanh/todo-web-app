@@ -1,4 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAction } from '@reduxjs/toolkit';
+
+const loading = createAction('setLoading');
+const error = createAction('setError');
+
+export const extraActions = {
+	setLoading: loading(),
+	setError: error(),
+};
 
 const extraSlice = createSlice({
 	name: 'extra',
@@ -7,10 +15,10 @@ const extraSlice = createSlice({
 		error: null,
 	},
 	reducers: {
-		setLoading(state, action) {
+		[extraActions.setLoading.type]: (state, action) => {
 			state.loading = action.payload;
 		},
-		setError(state, action) {
+		[extraActions.setError.type]: (state, action) => {
 			state.error = action.payload;
 		}
 	}
@@ -20,4 +28,5 @@ export const {
 	             setLoading,
 	             setError
              } = extraSlice.actions;
-export default extraSlice.reducer;
+export const extraSelect = state => state.extra;
+export const extraReducer = extraSlice.reducer;

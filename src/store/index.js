@@ -1,25 +1,58 @@
+import 'regenerator-runtime/runtime';
 import {
 	combineReducers,
 	configureStore,
 } from '@reduxjs/toolkit';
+import {
+	FLUSH,
+	PAUSE,
+	PERSIST,
+	persistReducer,
+	persistStore,
+	PURGE,
+	REGISTER,
+	REHYDRATE,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
-
 import AppSlices from './reducers/index';
+import rootSaga from './saga';
 
-const { TodoSlice, ExtraSlice } = AppSlices;
+const persistConfig = {
+	key: 'root-todos',
+	storage,
+};
+
+const {
+	      ToDoSlice,
+	      ExtraSlice
+      } = AppSlices;
 
 const rootReducers = combineReducers({
-	todo: TodoSlice.default,
-	extra: ExtraSlice.default,
-})
+	todos: ToDoSlice.todosReducer,
+	extra: ExtraSlice.extraReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducers);
 
 const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
-	reducer: rootReducers,
-	// middleware: sagaMiddleware,
+	reducer: persistedReducer,
+	middleware: getDefaultMiddleware => getDefaultMiddleware({
+		serializableCheck: {
+			ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+		}
+	}).concat(sagaMiddleware),
 });
 
-// sagaMiddleware.run();
+const persistor = persistStore(store);
 
-export default store;
+sagaMiddleware.run(rootSaga);
+
+const AppStore = {
+	store,
+	persistor
+};
+
+export default AppStore;

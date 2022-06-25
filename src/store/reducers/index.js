@@ -1,5 +1,8 @@
-import * as TodoSlice from './todo.slice'
-import * as ExtraSlice from './extra.slice'
+import * as ExtraSlice from './extra.slice';
+import * as ToDoSlice from './todo.slice';
 
-const slices = { TodoSlice, ExtraSlice }
-export default slices
+const slices = {
+	ToDoSlice,
+	ExtraSlice
+};
+export default slices;

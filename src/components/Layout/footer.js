@@ -23,11 +23,12 @@ const Div = styled(Container)(({ theme }) => (
 	}
 ));
 
-const Address = styled(Container)(() => (
+const Address = styled(Container)(({ theme }) => (
 	{
 		display: 'grid',
 		gridTemplate: '1fr 1fr / 1fr',
 		alignItems: 'end',
+		padding: theme.spacing(2, 2, 0),
 	}
 ));
 

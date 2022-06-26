@@ -8,14 +8,14 @@ import {
 	useSelector
 } from 'react-redux';
 import AppSlices from '../../store/reducers/index';
-import ToDoAdding from './todo-adding';
+import ToDoAdding from './todo-input';
 import ToDoList from './todo-list';
 
 const initialToDo = {
 	title: '',
 };
 
-export const TodoWrapper = () => {
+export const ToDoWrapper = () => {
 	const dispatch = useDispatch();
 	const {
 		      ToDoSlice: {

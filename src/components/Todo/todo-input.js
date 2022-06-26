@@ -19,7 +19,7 @@ const Div = styled(Container)(({ theme }) => (
 	}
 ));
 
-const ToDoAdding = ({
+const TodoInput = ({
 	todo,
 	isValid,
 	onChange,
@@ -31,7 +31,7 @@ const ToDoAdding = ({
 			<TextField
 				id="todo-id"
 				label="ToDo Task"
-				placeholder="Enter to do task..."
+				placeholder="What needs to be done?"
 				name="todo-id"
 				onChange={onChange}
 				value={todo.title}
@@ -51,4 +51,4 @@ const ToDoAdding = ({
 	);
 };
 
-export default memo(ToDoAdding);
+export default memo(TodoInput);

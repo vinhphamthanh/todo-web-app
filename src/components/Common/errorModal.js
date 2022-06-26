@@ -51,7 +51,7 @@ export const ErrorModal = () => {
 	}, [handleClose]);
 
 	return (
-		error ?
+		!!error ?
 			(
 				<Modal
 					open={!!error}

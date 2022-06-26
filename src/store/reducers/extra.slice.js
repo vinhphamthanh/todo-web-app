@@ -1,12 +1,4 @@
-import { createSlice, createAction } from '@reduxjs/toolkit';
-
-const loading = createAction('setLoading');
-const error = createAction('setError');
-
-export const extraActions = {
-	setLoading: loading(),
-	setError: error(),
-};
+import { createSlice } from '@reduxjs/toolkit';
 
 const extraSlice = createSlice({
 	name: 'extra',
@@ -15,10 +7,10 @@ const extraSlice = createSlice({
 		error: null,
 	},
 	reducers: {
-		[extraActions.setLoading.type]: (state, action) => {
+		setLoading(state, action) {
 			state.loading = action.payload;
 		},
-		[extraActions.setError.type]: (state, action) => {
+		setError(state, action) {
 			state.error = action.payload;
 		}
 	}

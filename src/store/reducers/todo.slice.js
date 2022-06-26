@@ -49,12 +49,6 @@ const todo = createSlice({
 	}
 });
 
-export const {
-	             setToDos,
-	             addToDo,
-	             updateToDo,
-	             deleteToDos,
-             } = todo.actions;
 export const todosSelect = state => state.todos;
 export const todosReducer = todo.reducer;
 

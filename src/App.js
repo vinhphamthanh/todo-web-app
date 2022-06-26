@@ -3,7 +3,6 @@ import {
 	CssBaseline
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { nanoid } from '@reduxjs/toolkit';
 import {
 	useEffect,
 	useState
@@ -16,10 +15,6 @@ import { AppBar } from './components/app-bar';
 import { ToDoAdding } from './components/todo/todo-adding';
 import { ToDoList } from './components/todo/todo-list';
 import AppSlices from './store/reducers';
-import {
-	sortByCompleted,
-	sortByDate
-} from './utils/sorting';
 
 const AppLayout = styled(Container)(({ theme }) => (
 	{
@@ -42,8 +37,6 @@ function App() {
 	const dispatch = useDispatch();
 	const {
 		      ToDoSlice: {
-			      addToDo,
-			      updateToDos,
 			      todosSelect,
 			      todoActions,
 		      }
@@ -54,13 +47,12 @@ function App() {
 	const [isToDoValid, setIsToDoValid] = useState(false);
 
 	useEffect(() => {
-		dispatch(todoActions.fetchToDos);
-	}, []);
+		dispatch(todoActions.fetchToDos());
+	}, [dispatch, todoActions]);
 
 	const handleInputToDo = evt => {
 		const { target: { value } } = evt;
 		const data = {
-			id: nanoid(),
 			createdAt: new Date().getTime(),
 			title: value,
 			completed: false,
@@ -79,30 +71,20 @@ function App() {
 
 		setToDo(initialToDo);
 		setIsToDoValid(false);
-		dispatch(addToDo(todo));
+		dispatch(todoActions.addToDo(todo));
 	};
 
 	const handleCompleteToDo = (id, checked) => {
-		const mutatedList = todos.map(item => {
-			if (item.id === id) {
-				return {
-					...item,
-					completed: checked,
-				};
-			}
+		const updateTodo = todos.find(item => item.id === id);
 
-			return item;
-		});
-
-		const sortByDateList = mutatedList.sort(sortByDate);
-		const sortByCompletedList = sortByDateList.sort(sortByCompleted);
-
-		dispatch(updateToDos(sortByCompletedList));
+		dispatch(todoActions.updateToDo({
+			...updateTodo,
+			completed: checked,
+		}));
 	};
 
 	const handleDeleteToDo = id => {
-		const mutatedToDo = todos.filter(item => item.id !== id);
-		dispatch(updateToDos(mutatedToDo));
+		dispatch(todoActions.deleteToDo(id))
 	};
 
 	return (

@@ -2,17 +2,23 @@ import {
 	createAction,
 	createSlice
 } from '@reduxjs/toolkit';
+import {
+	sortByCompleted,
+	sortByDate
+} from '../../utils/sorting';
 
 const fetch = createAction('fetchToDos');
 const set = createAction('setToDos');
 const add = createAction('addToDo');
-const update = createAction('updateToDos');
+const update = createAction('updateToDo');
+const del = createAction('deleteToDo');
 
 export const todoActions = {
-	fetchToDos: fetch(),
-	setToDos: set(),
-	addToDo: add(),
-	updateToDos: update(),
+	fetchToDos: fetch,
+	setToDos: set,
+	addToDo: add,
+	updateToDo: update,
+	deleteToDo: del,
 };
 
 const todo = createSlice({
@@ -21,23 +27,24 @@ const todo = createSlice({
 		todos: [],
 	},
 	reducers: {
-		[todoActions.setToDos.type]: (state, action) => {
-			console.log('')
-			console.log('[LOGGING----------------------LOGGING]')
-			console.log('[LOGGING]:::x:::slice:::action --> ', action)
+		[todoActions.setToDos().type]: (state, action) => {
 			state.todos = action.payload;
 		},
-		[todoActions.addToDo.type]: (state, action) => {
-			console.log('')
-			console.log('[LOGGING----------------------LOGGING]')
-			console.log('[LOGGING]:::x:::addTodo:::action --> ', action)
+		[todoActions.addToDo().type]: (state, action) => {
 			state.todos = [action.payload, ...state.todos];
 		},
-		[todoActions.updateToDos.type]: (state, action) => {
-			state.todos = action.payload;
+		[todoActions.updateToDo().type]: (state, action) => {
+			state.todos = state.todos.map(item => {
+				if (item.id === action.payload.id) {
+					return action.payload;
+				}
+
+				return item;
+			}).sort(sortByDate).sort(sortByCompleted);
 		},
-		deleteToDo(state, action) {
-			state.todo = action.payload;
+		[todoActions.deleteToDo().type]: (state, action) => {
+			state.todos =
+				state.todos.filter(item => item.id !== action.payload).sort(sortByDate).sort(sortByCompleted);
 		}
 	}
 });
@@ -45,8 +52,8 @@ const todo = createSlice({
 export const {
 	             setToDos,
 	             addToDo,
-	             updateToDos,
-	             // deleteToDos,
+	             updateToDo,
+	             deleteToDos,
              } = todo.actions;
 export const todosSelect = state => state.todos;
 export const todosReducer = todo.reducer;

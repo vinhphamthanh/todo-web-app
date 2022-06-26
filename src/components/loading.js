@@ -23,9 +23,7 @@ const Overlay = styled(Container)(() => (
 export const Loading = () => {
 	const { ExtraSlice: { extraSelect } } = AppSlices;
 	const { loading } = useSelector(extraSelect);
-	console.log('')
-	console.log('[LOGGING----------------------LOGGING]')
-	console.log('[LOGGING]:::x:::Loading:::loading --> ', loading)
+
 	return (
 		loading ?
 			(

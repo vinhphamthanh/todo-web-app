@@ -4,13 +4,13 @@ import {
 	useTheme
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ToDoItem } from './todo-item';
+import { memo } from 'react';
+import ToDoItem from './todo-item';
 
 const Div = styled(Paper)(({ theme }) => (
 	{
 		margin: `${theme.spacing(3)} auto`,
-		maxWidth: '100%',
-		width: 374,
+		width: '100%',
 		display: 'grid',
 		gap: theme.spacing(1),
 		padding: theme.spacing(3, 2),
@@ -18,10 +18,13 @@ const Div = styled(Paper)(({ theme }) => (
 		borderStyle: 'solid',
 		borderColor: theme.palette.primary.light,
 		borderRadius: theme.spacing(1),
+		[theme.breakpoints.up('sm')]: {
+			width: 450,
+		}
 	}
 ));
 
-export const ToDoList = ({
+const ToDoList = ({
 	todos,
 	onComplete,
 	onDelete
@@ -49,3 +52,5 @@ export const ToDoList = ({
 		</Div>
 	);
 };
+
+export default memo(ToDoList);

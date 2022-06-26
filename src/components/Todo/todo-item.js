@@ -6,6 +6,7 @@ import {
 	IconButton
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { memo } from 'react';
 
 const Div = styled(Container)(({ theme }) => (
 	{
@@ -20,7 +21,7 @@ const Div = styled(Container)(({ theme }) => (
 	}
 ));
 
-export const ToDoItem = ({
+const ToDoItem = ({
 	item,
 	theme,
 	onComplete,
@@ -49,6 +50,7 @@ export const ToDoItem = ({
 						disableRipple
 						checked={completed}
 						onChange={handleChange}
+						color="info"
 					/>
 				}
 				label={title}
@@ -65,3 +67,5 @@ export const ToDoItem = ({
 		</Div>
 	);
 };
+
+export default memo(ToDoItem);

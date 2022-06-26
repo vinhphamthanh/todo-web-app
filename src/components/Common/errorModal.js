@@ -4,12 +4,15 @@ import {
 	Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useEffect } from 'react';
+import {
+	useCallback,
+	useEffect
+} from 'react';
 import {
 	useDispatch,
 	useSelector
 } from 'react-redux';
-import AppSlices from '../store/reducers';
+import AppSlices from '../../store/reducers/index';
 
 const BoxContent = styled(Box)(({ theme }) => (
 	{
@@ -39,9 +42,9 @@ export const ErrorModal = () => {
 	const { error } = useSelector(extraSelect);
 	const dispatch = useDispatch();
 
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		dispatch(setError(null));
-	};
+	}, [dispatch, setError]);
 
 	useEffect(() => {
 		handleClose();

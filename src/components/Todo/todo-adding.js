@@ -4,20 +4,22 @@ import {
 	TextField
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { memo } from 'react';
 
 const Div = styled(Container)(({ theme }) => (
 	{
 		margin: theme.spacing(3, 0, 1),
 		display: 'grid',
 		gridTemplate: '1fr auto / 1fr',
-		maxWidth: 374,
 		width: '100%',
 		gap: theme.spacing(2),
+		[theme.breakpoints.up('sm')]: {
+			width: 450,
+		}
 	}
 ));
 
-
-export const ToDoAdding = ({
+const ToDoAdding = ({
 	todo,
 	isValid,
 	onChange,
@@ -27,7 +29,6 @@ export const ToDoAdding = ({
 	return (
 		<Div disableGutters>
 			<TextField
-				autoFocus
 				id="todo-id"
 				label="ToDo Task"
 				placeholder="Enter to do task..."
@@ -37,8 +38,6 @@ export const ToDoAdding = ({
 				inputProps={{
 					maxLength: 60,
 				}}
-				// error={isToDoDuplicated}
-				// helperText={isToDoDuplicated ? 'Entry is duplicated' : ''}
 			/>
 			<Button
 				variant="contained"
@@ -51,3 +50,5 @@ export const ToDoAdding = ({
 		</Div>
 	);
 };
+
+export default memo(ToDoAdding);

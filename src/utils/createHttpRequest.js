@@ -14,4 +14,4 @@ const createHttpRequest = method => (url, data) => fetch(url, {
 	...httpOptions(data, method)
 }).then(response => response.json());
 
-export default createHttpRequest
+export default createHttpRequest;

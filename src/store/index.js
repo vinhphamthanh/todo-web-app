@@ -1,4 +1,3 @@
-import 'regenerator-runtime/runtime';
 import {
 	combineReducers,
 	configureStore,
@@ -15,6 +14,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
+import 'regenerator-runtime/runtime';
 import AppSlices from './reducers/index';
 import rootSaga from './saga';
 

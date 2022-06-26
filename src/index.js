@@ -1,26 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import { Loading } from './components/loading'
-import { ErrorModal } from './components/errorModal';
-import AppStore from './store';
-import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import App from './App';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
+import AppStore from './store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
-	  <Provider store={AppStore.store}>
-		  <PersistGate loading={null} persistor={AppStore.persistor}>
-        <App />
-			  <Loading />
-			  <ErrorModal />
-		  </PersistGate>
-	  </Provider>
-  </React.StrictMode>
+	<React.StrictMode>
+		<Provider store={AppStore.store}>
+			<PersistGate loading={null} persistor={AppStore.persistor}>
+				<App/>
+			</PersistGate>
+		</Provider>
+	</React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -6,9 +6,9 @@ import {
 import { TODO_URL } from '../../constants/endpoints';
 import {
 	addToDoApi,
+	deleteToDoApi,
 	fetchToDosApi,
 	updateToDoApi,
-	deleteToDoApi,
 } from '../../services/todo/todo.service';
 import {
 	sortByCompleted,

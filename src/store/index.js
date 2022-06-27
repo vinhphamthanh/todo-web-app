@@ -15,7 +15,8 @@ import {
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
 import 'regenerator-runtime/runtime';
-import AppSlices from './reducers/index';
+import extraReducer from './reducers/extra.reducer';
+import todoReducer from './reducers/todo.reducer';
 import rootSaga from './saga';
 
 const persistConfig = {
@@ -23,14 +24,9 @@ const persistConfig = {
 	storage,
 };
 
-const {
-	      ToDoSlice,
-	      ExtraSlice
-      } = AppSlices;
-
 const rootReducers = combineReducers({
-	todos: ToDoSlice.todosReducer,
-	extra: ExtraSlice.extraReducer,
+	todos: todoReducer.reducer,
+	extra: extraReducer.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);

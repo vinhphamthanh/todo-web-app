@@ -3,109 +3,66 @@ import {
 	put,
 	takeLatest
 } from 'redux-saga/effects';
-import { TODO_URL } from '../../constants/endpoints';
 import {
 	addToDoApi,
 	deleteToDoApi,
-	fetchToDosApi,
+	getToDosApi,
 	updateToDoApi,
 } from '../../services/todo/todo.service';
-import {
-	sortByCompleted,
-	sortByDate
-} from '../../utils/sorting';
-import AppSlices from '../reducers';
+import extraReducer from '../reducers/extra.reducer';
+import todoReducer from '../reducers/todo.reducer';
 
 const {
-	      ToDoSlice: { todoActions },
-	      ExtraSlice: {
-		      setLoading,
-		      setError,
-	      },
-      } = AppSlices;
+	      getToDosStart,
+	      getToDos,
+	      addToDoStart,
+	      addToDo,
+	      updateToDoStart,
+	      updateToDo,
+	      deleteToDoStart,
+	      deleteToDo
+      } = todoReducer;
 
-function* setToDosWorker() {
+const {
+	      setLoading,
+	      setError
+      } = extraReducer;
+
+const createWorker = (reduxAction, api) => function* (action) {
 	try {
-		yield put({ type: setLoading.type, payload: true });
-		const todos = yield call(fetchToDosApi, TODO_URL);
-		yield put({
-			type: `todos/${todoActions.setToDos().type}`, // Add reducers name for action
-			payload: todos.sort(sortByDate).sort(sortByCompleted)
-		});
+		yield put(setLoading(true));
+		const result = yield call(api, ...action.payload);
+		yield put(reduxAction(result));
 	} catch (error) {
-		yield put({ type: setError.type, payload: error.message });
+		yield put(setError(error.message));
 	} finally {
-		yield put({ type: setLoading.type, payload: false });
+		yield put(setLoading(false));
 	}
-}
+};
 
-function* addToDoWorker(action) {
-	try {
-		yield put({ type: setLoading.type, payload: true });
+const getToDosWorker = createWorker(getToDos, getToDosApi);
+const addToDoWorker = createWorker(addToDo, addToDoApi);
+const updateToDoWorker = createWorker(updateToDo, updateToDoApi);
+const deleteToDoWorker = createWorker(deleteToDo, deleteToDoApi);
 
-		const todo = yield call(addToDoApi, TODO_URL, action.payload);
-		yield put({
-			type: `todos/${todoActions.addToDo().type}`, // Add reducers name for action
-			payload: todo,
-		});
-	} catch (error) {
-		yield put({ type: setError.type, payload: error.message });
-	} finally {
-		yield put({ type: setLoading.type, payload: false });
-	}
-}
-
-function* updateToDoWorker(action) {
-	try {
-		yield put({ type: setLoading.type, payload: true });
-
-		const { id } = action.payload;
-		const todo = yield call(updateToDoApi, `${TODO_URL}/${id}`, action.payload);
-		yield put({
-			type: `todos/${todoActions.updateToDo().type}`, // Add reducers name for action
-			payload: todo,
-		});
-	} catch (error) {
-		yield put({ type: setError.type, payload: error.message });
-	} finally {
-		yield put({ type: setLoading.type, payload: false });
-	}
-}
-
-function* deleteToDoWorker(action) {
-	try {
-		yield put({ type: setLoading.type, payload: true });
-
-		yield call(deleteToDoApi, `${TODO_URL}/${action.payload}`);
-		yield put({
-			type: `todos/${todoActions.deleteToDo().type}`, // Add reducers name for action
-			payload: action.payload,
-		});
-	} catch (error) {
-		yield put({ type: setError.type, payload: error.message });
-	} finally {
-		yield put({ type: setLoading.type, payload: false });
-	}
-}
-
-function* fetchToDosSaga() {
-	yield takeLatest(todoActions.fetchToDos().type, setToDosWorker);
+function* getToDosSaga() {
+	yield takeLatest(getToDosStart.toString(), getToDosWorker);
 }
 
 function* addToDoSaga() {
-	yield takeLatest(todoActions.addToDo().type, addToDoWorker);
+	yield takeLatest(addToDoStart.toString(), addToDoWorker);
 }
 
 function* updateToDoSaga() {
-	yield takeLatest(todoActions.updateToDo().type, updateToDoWorker);
+	yield takeLatest(updateToDoStart.toString(), updateToDoWorker);
 }
 
 function* deleteToDoSaga() {
-	yield takeLatest(todoActions.deleteToDo().type, deleteToDoWorker);
+	yield takeLatest(deleteToDoStart.toString(), deleteToDoWorker);
 }
 
 const todoSaga = [
-	fetchToDosSaga,
+	getToDosSaga,
 	addToDoSaga,
 	updateToDoSaga,
 	deleteToDoSaga,

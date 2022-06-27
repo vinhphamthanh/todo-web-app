@@ -7,7 +7,8 @@ import {
 	useDispatch,
 	useSelector
 } from 'react-redux';
-import AppSlices from '../../store/reducers/index';
+import { TODO_URL } from '../../constants/endpoints';
+import todoReducer, { todosSelect } from '../../store/reducers/todo.reducer';
 import ToDoAdding from './todo-input';
 import ToDoList from './todo-list';
 
@@ -17,20 +18,20 @@ const initialToDo = {
 
 export const ToDoWrapper = () => {
 	const dispatch = useDispatch();
-	const {
-		      ToDoSlice: {
-			      todosSelect,
-			      todoActions,
-		      }
-	      } = AppSlices;
 	const { todos } = useSelector(todosSelect);
+	const {
+		      getToDosStart,
+		      addToDoStart,
+		      updateToDoStart,
+		      deleteToDoStart
+	      } = todoReducer;
 
 	const [todo, setToDo] = useState(initialToDo);
 	const [isToDoValid, setIsToDoValid] = useState(false);
 
 	useEffect(() => {
-		dispatch(todoActions.fetchToDos());
-	}, [dispatch, todoActions]);
+		dispatch(getToDosStart([TODO_URL]));
+	}, [dispatch, getToDosStart]);
 
 	const handleInputToDo = useCallback(evt => {
 		const { target: { value } } = evt;
@@ -53,21 +54,25 @@ export const ToDoWrapper = () => {
 
 		setToDo(initialToDo);
 		setIsToDoValid(false);
-		dispatch(todoActions.addToDo(todo));
-	}, [todo, dispatch, todoActions]);
+		const data = [TODO_URL, todo];
+		dispatch(addToDoStart(data));
+	}, [todo, dispatch, addToDoStart]);
 
 	const handleCompleteToDo = useCallback((id, checked) => {
 		const updateTodo = todos.find(item => item.id === id);
 
-		dispatch(todoActions.updateToDo({
-			...updateTodo,
-			completed: checked,
-		}));
-	}, [dispatch, todoActions, todos]);
+		const data = [
+			`${TODO_URL}/${id}`, {
+				...updateTodo,
+				completed: checked,
+			}
+		];
+		dispatch(updateToDoStart(data));
+	}, [dispatch, updateToDoStart, todos]);
 
 	const handleDeleteToDo = useCallback(id => {
-		dispatch(todoActions.deleteToDo(id));
-	}, [dispatch, todoActions]);
+		dispatch(deleteToDoStart([`${TODO_URL}/${id}`]));
+	}, [dispatch, deleteToDoStart]);
 
 	return (
 		<>

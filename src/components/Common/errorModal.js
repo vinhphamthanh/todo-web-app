@@ -12,7 +12,7 @@ import {
 	useDispatch,
 	useSelector
 } from 'react-redux';
-import AppSlices from '../../store/reducers/index';
+import extraReducer, { extraSelect } from '../../store/reducers/extra.reducer';
 
 const BoxContent = styled(Box)(({ theme }) => (
 	{
@@ -33,12 +33,7 @@ const BoxContent = styled(Box)(({ theme }) => (
 ));
 
 export const ErrorModal = () => {
-	const {
-		      ExtraSlice: {
-			      extraSelect,
-			      setError
-		      }
-	      } = AppSlices;
+	const { setError } = extraReducer;
 	const { error } = useSelector(extraSelect);
 	const dispatch = useDispatch();
 

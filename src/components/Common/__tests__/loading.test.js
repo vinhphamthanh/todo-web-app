@@ -1,18 +1,19 @@
-import { Loading } from '../loading';
 import AppStore from '../../../store';
-import AppSlices from '../../../store/reducers'
+import extraReducer from '../../../store/reducers/extra.reducer';
+import { Loading } from '../loading';
 
 const { store } = AppStore;
-const { ExtraSlice: { setLoading }} = AppSlices;
+
+const { setLoading } = extraReducer;
 
 describe('Loading', () => {
 	it('should not show loading state', () => {
-		cy.mount(<Loading />, { reduxStore: store })
+		cy.mount(<Loading/>, { reduxStore: store });
 	});
 
 	it('should show loading state', () => {
 		store.dispatch(setLoading(true));
 
-		cy.mount(<Loading />, { reduxStore: store });
-	})
-})
+		cy.mount(<Loading/>, { reduxStore: store });
+	});
+});

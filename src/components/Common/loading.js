@@ -2,7 +2,7 @@ import { ChangeCircle } from '@mui/icons-material';
 import { Paper, } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
-import AppSlices from '../../store/reducers/index';
+import { extraSelect } from '../../store/reducers/extra.reducer';
 
 const Overlay = styled(Paper)(() => (
 	{
@@ -20,7 +20,6 @@ const Overlay = styled(Paper)(() => (
 ));
 
 export const Loading = () => {
-	const { ExtraSlice: { extraSelect } } = AppSlices;
 	const { loading } = useSelector(extraSelect);
 
 	return (

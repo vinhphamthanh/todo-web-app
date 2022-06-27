@@ -5,8 +5,6 @@ const actions = ['setLoading', 'setError'];
 
 const extraActions = createActionList(actions);
 
-console.log('extraActions', extraActions);
-
 const {
 	      setLoading,
 	      setError

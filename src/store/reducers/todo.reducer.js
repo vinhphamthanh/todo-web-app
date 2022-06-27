@@ -1,20 +1,25 @@
-import {
-	createAction,
-	createReducer
-} from '@reduxjs/toolkit';
+import { createReducer } from '@reduxjs/toolkit';
 import {
 	sortByCompleted,
 	sortByDate
 } from '../../utils/sorting';
+import { createActionList } from './helpers';
 
-const getToDosStart = createAction('todos/getToDosStart');
-const getToDos = createAction('todos/getToDos');
-const addToDoStart = createAction('todos/addToDoStart');
-const addToDo = createAction('todos/addToDo');
-const updateToDoStart = createAction('todos/updateToDoStart');
-const updateToDo = createAction('todos/updateToDo');
-const deleteToDoStart = createAction('todos/deleteToDoStart');
-const deleteToDo = createAction('todos/deleteToDo');
+const actions = [
+	'getToDos',
+	'addToDo',
+	'updateToDo',
+	'deleteToDo',
+];
+
+const todoActions = createActionList(actions);
+
+const {
+	      getToDos,
+	      addToDo,
+	      updateToDo,
+	      deleteToDo
+      } = todoActions;
 
 const initialState = {
 	todos: []
@@ -51,13 +56,6 @@ const reducer = createReducer(initialState, (builder) => {
 export const todosSelect = state => state.todos;
 
 export default Object.create({
-	getToDosStart,
-	getToDos,
-	addToDoStart,
-	addToDo,
-	updateToDoStart,
-	updateToDo,
-	deleteToDoStart,
-	deleteToDo,
+	todoActions,
 	reducer,
 });

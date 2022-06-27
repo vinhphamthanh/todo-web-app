@@ -4,7 +4,7 @@ import { Loading } from '../loading';
 
 const { store } = AppStore;
 
-const { setLoading } = extraReducer;
+const { extraActions: { setLoading } } = extraReducer;
 
 describe('Loading', () => {
 	it('should not show loading state', () => {

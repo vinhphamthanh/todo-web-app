@@ -1,7 +1,16 @@
-import { createAction, createReducer } from '@reduxjs/toolkit';
+import { createReducer } from '@reduxjs/toolkit';
+import { createActionList } from './helpers';
 
-const setLoading = createAction('extra/setLoading')
-const setError = createAction('extra/setError')
+const actions = ['setLoading', 'setError'];
+
+const extraActions = createActionList(actions);
+
+console.log('extraActions', extraActions);
+
+const {
+	      setLoading,
+	      setError
+      } = extraActions;
 
 const initialState = {
 	loading: false,
@@ -15,13 +24,12 @@ const reducer = createReducer(initialState, (builder) => {
 	})
 	.addCase(setError, (state, action) => {
 		state.error = action.payload;
-	})
+	});
 });
 
 export const extraSelect = state => state.extra;
 
 export default Object.create({
-	setError,
-	setLoading,
+	extraActions,
 	reducer,
-})
+});

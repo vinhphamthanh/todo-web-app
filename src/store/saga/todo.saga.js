@@ -13,19 +13,23 @@ import extraReducer from '../reducers/extra.reducer';
 import todoReducer from '../reducers/todo.reducer';
 
 const {
-	      getToDosStart,
-	      getToDos,
-	      addToDoStart,
-	      addToDo,
-	      updateToDoStart,
-	      updateToDo,
-	      deleteToDoStart,
-	      deleteToDo
+	      todoActions: {
+		      getToDos_start,
+		      getToDos,
+		      addToDo_start,
+		      addToDo,
+		      updateToDo_start,
+		      updateToDo,
+		      deleteToDo_start,
+		      deleteToDo,
+	      }
       } = todoReducer;
 
 const {
-	      setLoading,
-	      setError
+	      extraActions: {
+		      setLoading,
+		      setError
+	      }
       } = extraReducer;
 
 const createWorker = (reduxAction, api) => function* (action) {
@@ -46,19 +50,19 @@ const updateToDoWorker = createWorker(updateToDo, updateToDoApi);
 const deleteToDoWorker = createWorker(deleteToDo, deleteToDoApi);
 
 function* getToDosSaga() {
-	yield takeLatest(getToDosStart.toString(), getToDosWorker);
+	yield takeLatest(getToDos_start.toString(), getToDosWorker);
 }
 
 function* addToDoSaga() {
-	yield takeLatest(addToDoStart.toString(), addToDoWorker);
+	yield takeLatest(addToDo_start.toString(), addToDoWorker);
 }
 
 function* updateToDoSaga() {
-	yield takeLatest(updateToDoStart.toString(), updateToDoWorker);
+	yield takeLatest(updateToDo_start.toString(), updateToDoWorker);
 }
 
 function* deleteToDoSaga() {
-	yield takeLatest(deleteToDoStart.toString(), deleteToDoWorker);
+	yield takeLatest(deleteToDo_start.toString(), deleteToDoWorker);
 }
 
 const todoSaga = [

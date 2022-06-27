@@ -20,18 +20,20 @@ export const ToDoWrapper = () => {
 	const dispatch = useDispatch();
 	const { todos } = useSelector(todosSelect);
 	const {
-		      getToDosStart,
-		      addToDoStart,
-		      updateToDoStart,
-		      deleteToDoStart
+		      todoActions: {
+						getToDos_start,
+			      addToDo_start,
+			      updateToDo_start,
+			      deleteToDo_start,
+		      },
 	      } = todoReducer;
 
 	const [todo, setToDo] = useState(initialToDo);
 	const [isToDoValid, setIsToDoValid] = useState(false);
 
 	useEffect(() => {
-		dispatch(getToDosStart([TODO_URL]));
-	}, [dispatch, getToDosStart]);
+		dispatch(getToDos_start([TODO_URL]));
+	}, [dispatch, getToDos_start]);
 
 	const handleInputToDo = useCallback(evt => {
 		const { target: { value } } = evt;
@@ -55,8 +57,8 @@ export const ToDoWrapper = () => {
 		setToDo(initialToDo);
 		setIsToDoValid(false);
 		const data = [TODO_URL, todo];
-		dispatch(addToDoStart(data));
-	}, [todo, dispatch, addToDoStart]);
+		dispatch(addToDo_start(data));
+	}, [todo, dispatch, addToDo_start]);
 
 	const handleCompleteToDo = useCallback((id, checked) => {
 		const updateTodo = todos.find(item => item.id === id);
@@ -67,12 +69,12 @@ export const ToDoWrapper = () => {
 				completed: checked,
 			}
 		];
-		dispatch(updateToDoStart(data));
-	}, [dispatch, updateToDoStart, todos]);
+		dispatch(updateToDo_start(data));
+	}, [dispatch, updateToDo_start, todos]);
 
 	const handleDeleteToDo = useCallback(id => {
-		dispatch(deleteToDoStart([`${TODO_URL}/${id}`]));
-	}, [dispatch, deleteToDoStart]);
+		dispatch(deleteToDo_start([`${TODO_URL}/${id}`]));
+	}, [dispatch, deleteToDo_start]);
 
 	return (
 		<>

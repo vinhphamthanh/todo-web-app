@@ -4,7 +4,7 @@ import { ErrorModal } from '../errorModal';
 
 const { store } = AppStore;
 
-const { setError } = extraReducer;
+const { extraActions: { setError } } = extraReducer;
 
 describe('Error Modal', () => {
 	it('should mount the component', () => {

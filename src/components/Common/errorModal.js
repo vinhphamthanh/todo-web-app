@@ -33,7 +33,7 @@ const BoxContent = styled(Box)(({ theme }) => (
 ));
 
 export const ErrorModal = () => {
-	const { setError } = extraReducer;
+	const { extraActions: { setError } } = extraReducer;
 	const { error } = useSelector(extraSelect);
 	const dispatch = useDispatch();
 
